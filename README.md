@@ -38,3 +38,6 @@ $ rails server
 ```
 
 詳しくは、[*Ruby on Rails チュートリアル*](http://railstutorial.jp/)を参考にしてください。
+
+https://fierce-falls-44303.herokuapp.com/
+https://git.heroku.com/fierce-falls-44303.git
