@@ -20,8 +20,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       @user.send_activation_email
-      flash[:info] = "Please check your email to activate your account.\n <<email-content> #{edit_account_activation_url(@user.activation_token,
-                                                          email: @user.email)}>"
+      flash[:info] = "Please check your email to activate your account.\n <<email-content(In a real application, this link is sent by e-mail.)> #{edit_account_activation_url(@user.activation_token, email: @user.email)}>"
       # show activation link address on message, temporarily.
 
       redirect_to root_url
