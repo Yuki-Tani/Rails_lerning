@@ -1,0 +1,6 @@
+$(".users").html("<%= escape_javascript(render @users) %>");
+
+<%#
+  更新する箇所だけを書き換えを使って上書き
+  renderにはjavascriptのescapeが必要っぽい
+%>

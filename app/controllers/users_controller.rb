@@ -5,7 +5,17 @@ class UsersController < ApplicationController
   before_action :admin_user,     only: :destroy
 
   def index
-    @users = User.where(activated: true).paginate(page: params[:page])
+    if params[:serch] then
+      @users = User.where(activated: true)
+                .where("name like ?","%#{params[:serch]}%")
+                .paginate(page: params[:page])
+    else
+      @users = User.where(activated: true).paginate(page: params[:page])
+    end
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show

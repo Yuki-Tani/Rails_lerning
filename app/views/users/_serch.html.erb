@@ -1,0 +1,22 @@
+<%= form_tag('/users',
+              method: "get", remote: true, class: "form-inline") do |f| %>
+  <div class="form-group">
+    <%= text_field_tag :serch ,params[:serch], class: "form-control"%>
+  </div>
+  <%= submit_tag "Serch", class: "btn btn-primary serch_btn" %>
+<% end %>
+
+<%#
+  特定のモデルに拠らないフォームは from_tag で作成
+  第一引数はaction属性のリンク先
+  第二引数はオプションのハッシュ
+    method: htmlメソッド
+    remote: Ajax非同期送信
+
+  text_field_tag
+  第一引数は値を格納する先のparamハッシュのキー
+  第二引数はdefault値（今回はAjax更新を使用するため必要なしだが、Ajax無効時にも対応するため設定）
+
+  上のclass設定は横並び検索フォーム(serch_btnとしてwidthとvertical-alignを設定)
+  埋め込み型の検索フォームも作れる
+%>
