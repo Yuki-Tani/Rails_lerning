@@ -39,3 +39,12 @@ following = users[2..50]
 followers = users[3..40]
 following.each { |followed| user.follow(followed) }
 followers.each { |follower| follower.follow(user) }
+
+#お気に入り登録
+users = User.all
+user = users.first
+fav_users = users[2..4]
+fav_users.each { |u| user.favor(u.microposts[0])
+                     user.favor(u.microposts[1])
+                     u.favor(user.microposts[2])
+                     u.favor(user.microposts[3])}

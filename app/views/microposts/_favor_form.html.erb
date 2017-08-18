@@ -1,0 +1,27 @@
+<% if current_user %>
+<div id="favor_form">
+  <% if current_user.favorite?(micropost) %>
+    <%= form_for(current_user.favorites.find_by(micropost_id: micropost.id), html: { method: :delete }, remote: true) do |f| %>
+      <%= button_tag class: "btn btn-warning btn-xs",
+                      data: {disable_with: "wait"} do %>
+        <%= content_tag :span, "#{micropost.fav_users.count}",
+            class: "glyphicon glyphicon-star" %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= form_for(current_user.favorites.build, remote: true) do |f| %>
+    <div><%= hidden_field_tag :micropost_id, micropost.id %></div>
+      <%= button_tag class: "btn btn-default btn-xs",
+                      data: {disable_with: "wait"} do %>
+        <%= content_tag :span, "#{micropost.fav_users.count}",
+            class: "glyphicon glyphicon-star" %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+<% end %>
+
+<%#
+　星付きボタンをrailsで実装するためにf.submitでは無くbutton_tagとcontent_tagを使用
+　ボタンにdate: {disable_with: "~~"}を指定して更新中ボタンを無効に
+%>

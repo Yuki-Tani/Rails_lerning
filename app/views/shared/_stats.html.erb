@@ -12,4 +12,16 @@
     </strong>
     followers
   </a>
+  <div class="stats_item">
+    <strong id="favorites-<%= @user.id %>" class="stat">
+      <%= @user.fav_posts.count %>
+    </strong>
+    favorites
+  </div>
+  <div class="stats_item">
+    <strong id="stars-<%= @user.id %>" class="stat">
+      <%= @user.microposts.joins(:favorites).count %>
+    </strong>
+    stars
+  </div>
 </div>

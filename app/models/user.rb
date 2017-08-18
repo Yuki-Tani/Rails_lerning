@@ -8,6 +8,13 @@ class User < ApplicationRecord
                                    dependent:   :destroy
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
+
+  # 複数のfavoritesを保持
+  has_many :favorites, dependent: :destroy
+  # favoritesを媒介して複数のmicropostsを保持,
+  # 既にあるmicropostsと名前衝突を避けるため sourceを追加して別名を付与
+  has_many :fav_posts, through: :favorites, source: :micropost;
+
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
@@ -81,8 +88,12 @@ class User < ApplicationRecord
     #高速
     following_ids = "SELECT followed_id FROM relationships
                      WHERE follower_id = :user_id"
+    favorite_ids = "SELECT micropost_id FROM favorites
+                    WHERE user_id = :user_id"
     Micropost.where("user_id IN (#{following_ids})
-                     OR user_id = :user_id", user_id: id)
+                     OR user_id = :user_id
+                     OR id IN (#{favorite_ids})", user_id: id)
+    #いいねしているmicropostもfeed
   end
 
   # ユーザーをフォローする
@@ -98,6 +109,19 @@ class User < ApplicationRecord
   # 現在のユーザーがフォローしてたらtrueを返す
   def following?(other_user)
     following.include?(other_user)
+  end
+
+  # micropostをお気に入り登録する
+  def favor(micropost)
+    favorites.create(micropost_id: micropost.id)
+  end
+  # micropostのお気に入り登録を解除する
+  def unfavor(micropost)
+    favorites.find_by(micropost_id: micropost.id).destroy
+  end
+  # お気に入り登録しているか
+  def favorite?(micropost)
+    fav_posts.include?(micropost)
   end
 
   private
